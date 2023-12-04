@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Лабораторна робота 6</title>
+  <script>
+
+// завдання 1
+//Напишіть наступні функції:
+//createProduct(obj, callback) - приймає об'єкт товару без
+//id, а також коллбек. Функція створює об'єкт товару,
+//додаючи йому унікальний ідентифікатор у
+//властивість id та викликає коллбек передаючи йому
+//створений об'єкт.
+//logProduct(product) - колббек що приймає об'єкт
+//продукту і логуючий його в консоль.
+//logTotalPrice(product) - колббек, що приймає об'єкт
+//продукту і логіює загальну вартість товару в консоль
+
+function createProduct(obj, callback) {
+    let id = generateId();
+    obj.id = id;
+    callback(obj);
+  }
+  
+  function logProduct(product) {
+    console.log(product);
+  }
+  
+  function logTotalPrice(product) {
+    let totalPrice = product.price * product.quantity;
+    console.log("Total price:", totalPrice);
+  }
+  
+  function generateId() {
+    return Math.random().toString(36).substr(2, 9);
+  }
+
+// Приклад для виконання:
+
+let product = {
+  name: "Phone",
+  price: 500,
+  quantity: 2
+};
+
+createProduct(product, logProduct);
+logTotalPrice(product);
+
+
+//   завдання 3
+// Задано об'єкт medicines з назвами препаратів та датами їх зберігання.
+// Необхідно отримати масив, в якому будуть лише назви препаратів.
+// Далі потрібно прибрати медикаменти, в яких строк зберігання уже пройшов.
+// У новому масиві медикаменти потрібно відсортувати у хронологічному порядку.
+// Результат потрібно вивести у консоль.
+
+const medicines = {
+  Агалгін: new Date("2022-05-01"),
+  Ношпа: new Date("2025-07-02"),
+  Альфахолін: new Date("2024-12-21"),
+  Аспірин: new Date("2022-08-15"),
+  Аспаркам: new Date("2024-04-18"),
+};
+
+// Отримуємо масив з назвами препаратів
+const medicineNames = Object.keys(medicines);
+
+// Видаляємо медикаменти, у яких строк зберігання вже пройшов
+const currentDate = new Date();
+const validMedicines = medicineNames.filter((medicine) => medicines[medicine] > currentDate);
+
+// Сортуємо медикаменти у хронологічному порядку
+validMedicines.sort((a, b) => medicines[a] - medicines[b]);
+
+// Виводимо результат у консоль
+console.log(validMedicines);
+
+
+// завдання 5
+// Напишіть функцію, яка приймає массив об'єктів і
+// повертає новий массив. Зробіть знижку 20 % на всі
+// фрукти у масиві. Надайте ід для кожного продукту.
+
+
+function applyDiscount(fruits) {
+  // Створюємо новий масив для збереження знижених фруктів
+  const discountedFruits = [];
+
+  // Проходимося по кожному об'єкту у вхідному масиві
+  for (let i = 0; i < fruits.length; i++) {
+    const fruit = fruits[i];
+
+    // Застосовуємо знижку 20% до ціни фрукту
+    const discountedPrice = fruit.price * 0.8;
+
+    // Створюємо новий об'єкт зі зниженою ціною та ідентифікатором
+    const discountedFruit = {
+      id: i + 1, // Ідентифікатор - порядковий номер фрукту в масиві + 1
+      name: fruit.name,
+      price: discountedPrice,
+    };
+
+    // Додаємо знижений фрукт до нового масиву
+    discountedFruits.push(discountedFruit);
+  }
+
+  // Повертаємо новий масив зі зниженими фруктами
+  return discountedFruits;
+}
+
+const fruits = [
+  { name: "apple", price: 200 },
+  { name: "orange", price: 300 },
+  { name: "grapes", price: 750 },
+];
+
+console.log(applyDiscount(fruits));
+
+
+// завдання 7
+// Напиши клас Client який створює об'єкт з ​​властивостями login email. Оголоси приватні властивості #login #email,
+//доступ до яких зроби через геттер та сеттер login email.
+
+/**
+ * Клас Client представляє об'єкт з властивостями login і email.
+ */
+ class Client {
+  // Оголошення приватних властивостей #login і #email
+  #login;
+  #email;
+
+  /**
+   * Конструктор класу Client.
+   * @param string login - Логін клієнта.
+   * @param string email - Електронна пошта клієнта.
+   */
+  constructor(login, email) {
+    this.#login = login;
+    this.#email = email;
+  }
+
+  /**
+   * Геттер для отримання значення приватної властивості #login.
+   * @returns string Значення логіна клієнта.
+   */
+  get login() {
+    return this.#login;
+  }
+
+  /**
+   * Сеттер для встановлення значення приватної властивості #login.
+   * @param string value - Нове значення логіна клієнта.
+   */
+  set login(value) {
+    this.#login = value;
+  }
+
+  /**
+   * Геттер для отримання значення приватної властивості #email.
+   * @returns string Значення електронної пошти клієнта.
+   */
+  get email() {
+    return this.#email;
+  }
+
+  /**
+   * Сеттер для встановлення значення приватної властивості #email.
+   * @param string value - Нове значення електронної пошти клієнта.
+   */
+  set email(value) {
+    this.#email = value;
+  }
+}
+
+// Приклад використання класу Client
+const client = new Client("vlada_figol", "vlada.figol@example.com");
+console.log(client.login); // Виведе "vlada_figol"
+console.log(client.email); // Виведе "vlada.figol@example.com"
+
+client.login = "vladafigol"; // Змінюємо значення логіна
+client.email = "vladafigol@example.com"; // Змінюємо значення електронної пошти
+
+console.log(client.login); // Виведе "vladafigol"
+console.log(client.email); // Виведе "vladafigol@example.com"
+
+//завдання 9
+//Поверніть об'єкт, в якому вказано кількість тегів. 
+//         Очікуваний результат {js: 3, nodejs: 3, html: 2, css: 2,
+//         react: 2}
+
+
+const tweets = [
+  { id: "000", likes: 5, tags: ["js", "nodejs"] },
+  { id: "001", likes: 2, tags: ["html", "css"] },
+  { id: "002", likes: 17, tags: ["html", "js", "nodejs"] },
+  { id: "003", likes: 8, tags: ["css", "react"] },
+  { id: "004", likes: 0, tags: ["js", "nodejs", "react"] },
+];
+
+// Створюємо об'єкт для збереження кількості тегів
+const tagCount = {};
+
+// Проходимося по кожному об'єкту в масиві tweets
+for (let i = 0; i < tweets.length; i++) {
+  const tweet = tweets[i];
+  
+  // Проходимося по кожному тегу в поточному об'єкті
+  for (let j = 0; j < tweet.tags.length; j++) {
+    const tag = tweet.tags[j];
+    
+    // Якщо тег вже присутній в об'єкті tagCount, збільшуємо його значення на 1
+    if (tagCount[tag]) {
+      tagCount[tag]++;
+    } 
+    // Якщо тег ще не присутній в об'єкті tagCount, створюємо його зі значенням 1
+    else {
+      tagCount[tag] = 1;
+    }
+  }
+}
+
+console.log(tagCount);
+
+//завдання 10
+// Напишіть функцію checkBrackets(str) яка приймає
+//         рядок жс коду (someFn)  і перевіряє правильність
+//         закриття дужок () {} []
+//         Якщо рядок містить коректний код функція повертає
+//         true.
+//         В іншому випадку повертає false
+
+function checkBrackets(str) {
+  const stack = []; // Створюємо стек для збереження відкриваючих дужок
+
+  // Проходимося по кожному символу в рядку
+  for (let i = 0; i < str.length; i++) {
+    const char = str[i];
+
+    // Якщо символ є відкриваючою дужкою, додаємо її до стеку
+    if (char === "(" || char === "{" || char === "[") {
+      stack.push(char);
+    }
+    // Якщо символ є закриваючою дужкою
+    else if (char === ")" || char === "}" || char === "]") {
+      // Перевіряємо, чи стек не пустий
+      if (stack.length === 0) {
+        return false; // Якщо стек пустий, то закриваюча дужка не має відповідної відкриваючої дужки
+      }
+
+      const lastBracket = stack.pop(); // Видаляємо останню дужку зі стеку
+
+      // Перевіряємо, чи закриваюча дужка відповідає останній відкриваючій дужці
+      if (
+        (char === ")" && lastBracket !== "(") ||
+        (char === "}" && lastBracket !== "{") ||
+        (char === "]" && lastBracket !== "[")
+      ) {
+        return false; // Якщо закриваюча дужка не відповідає останній відкриваючій дужці, повертаємо false
+      }
+    }
+  }
+
+  // Перевіряємо, чи стек пустий після перебору всіх символів
+  if (stack.length === 0) {
+    return true; // Якщо стек пустий, то всі дужки були правильно закриті
+  } else {
+    return false; // Якщо стек не пустий, то деякі дужки не були закриті
+  }
+}
+
+console.log(checkBrackets("function someFn() { return true; }")); // true
+console.log(checkBrackets("function someFn() { return true;")); // false
+console.log(checkBrackets("function someFn() { return true; } )")); // false
+console.log(checkBrackets("function someFn() { return true; } }")); // false
+console.log(checkBrackets("function someFn() { return true; } ]")); // false
+
+</script>
+</head>
+
+
+<body>
+
+
+</body>
+</html>
+
+  
